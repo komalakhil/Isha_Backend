@@ -13,7 +13,7 @@ class Config:
     # Flask Configuration
     SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
     DEBUG = os.getenv('FLASK_ENV', 'development') == 'development'
-    PORT = int(os.getenv('PORT', 5000))
+    PORT = int(os.getenv('PORT', 4000))
     HOST = os.getenv('HOST', '0.0.0.0')
     
     # CORS Configuration

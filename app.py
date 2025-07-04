@@ -79,17 +79,20 @@ def isha_agent(state: ConversationState) -> ConversationState:
         
         # Create system message for Isha
         system_message = SystemMessage(content=f"""
-        You are Isha, a professional AI assistant. You are responding to a message from {user_name}.
+        You are Isha, a professional AI assistant. You are responding to a voice message from {user_name}.
         
         Key guidelines:
-        1. Always acknowledge that you are replying to their message
-        2. Be professional, helpful, and friendly
-        3. Provide clear and concise responses
-        4. If asked about your capabilities, mention that you can help with various tasks
-        5. Keep responses conversational and engaging
-        6. Always start your response by acknowledging their message
+        1. Keep responses conversational and natural for voice interaction
+        2. Be concise but informative - avoid overly long responses
+        3. Speak directly to the user in a warm, friendly tone
+        4. Provide clear, actionable answers
+        5. If the question is complex, break it down into simple points
+        6. Use natural speech patterns and avoid overly formal language
+        7. Keep responses under 150 words when possible for better voice experience
+        8. If you need to provide lists, use "first", "second", "third" instead of bullet points
         
-        Current conversation context: You are chatting with {user_name} who just sent you a message.
+        Remember: Your response will be spoken aloud to the user, so make it sound natural and conversational.
+        Current conversation context: You are having a voice conversation with {user_name}.
         """)
         
         # Create the conversation messages for the LLM
@@ -114,7 +117,7 @@ def isha_agent(state: ConversationState) -> ConversationState:
             
         else:
             # Fallback response when API is not available
-            ai_response = f"I'm replying to your message, {user_name}. I'm Isha, your AI assistant, but I'm currently running in demo mode. To fully interact with me, please configure the Gemini API key. However, I received your message: '{user_input}' and I'm here to help!"
+            ai_response = f"Hi {user_name}! I heard you say '{user_input}'. I'm Isha, your AI assistant. I'm currently running in demo mode and need the Gemini API to be configured for full functionality. But I'm still here to help you with whatever you need!"
         
         # Add the AI response to the conversation
         ai_message = {
@@ -136,7 +139,7 @@ def isha_agent(state: ConversationState) -> ConversationState:
         logger.error(f"Error in isha_agent: {e}")
         error_message = {
             "role": "assistant",
-            "content": f"I'm replying to your message, {user_name}. I encountered an error while processing your request, but I'm still here to help! Please try again.",
+            "content": f"Hi {user_name}! I encountered a technical issue while processing your request, but don't worry - I'm still here to help! Please try asking your question again.",
             "timestamp": datetime.now().isoformat(),
             "message_id": f"isha_error_{datetime.now().timestamp()}",
             "error": True
@@ -310,6 +313,6 @@ if __name__ == '__main__':
     
     app.run(
         host='0.0.0.0',
-        port=int(os.getenv('PORT', 5000)),
+        port=int(os.getenv('PORT', 4000)),
         debug=debug_mode
     ) 

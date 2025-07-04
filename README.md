@@ -52,7 +52,11 @@ Create a `.env` file in the backend directory:
 GEMINI_API_KEY=your_gemini_api_key_here
 FLASK_ENV=development
 PORT=5000
+MODEL_TEMPERATURE=0.7
+MAX_OUTPUT_TOKENS=150
 ```
+
+**Note**: The `MAX_OUTPUT_TOKENS` is set to 150 for optimal voice responses. Shorter responses work better for text-to-speech.
 
 ### 5. Get Gemini API Key
 1. Go to [Google AI Studio](https://makersuite.google.com/app/apikey)
@@ -184,8 +188,15 @@ The backend uses LangGraph to create a structured conversation flow:
 ### Model Configuration
 - `MODEL_NAME`: Gemini model name (default: gemini-1.5-flash)
 - `MODEL_TEMPERATURE`: Response creativity (0.0-1.0, default: 0.7)
-- `MAX_OUTPUT_TOKENS`: Maximum response length (default: 1000)
+- `MAX_OUTPUT_TOKENS`: Maximum response length (default: 150 for voice, 1000 for text)
 - `MAX_CONVERSATION_HISTORY`: Number of messages to keep in context (default: 5)
+
+### Voice-Specific Configuration
+The backend is optimized for voice interactions:
+- Shorter responses (under 150 words) for better speech synthesis
+- Conversational tone and natural language patterns
+- Avoiding bullet points and formal formatting
+- Using sequential words like "first", "second", "third" instead of lists
 
 ## 🎨 Customization
 
@@ -194,10 +205,12 @@ Edit the system message in `app.py`:
 
 ```python
 system_message = SystemMessage(content=f"""
-You are Isha, a professional AI assistant. You are responding to a message from {user_name}.
+You are Isha, a professional AI assistant. You are responding to a voice message from {user_name}.
 
 Key guidelines:
-1. Always acknowledge that you are replying to their message
+1. Keep responses conversational and natural for voice interaction
+2. Be concise but informative - avoid overly long responses
+3. Speak directly to the user in a warm, friendly tone
 2. Be professional, helpful, and friendly
 3. Provide clear and concise responses
 4. If asked about your capabilities, mention that you can help with various tasks
